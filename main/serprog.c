@@ -38,8 +38,7 @@ static const uint32_t CommandMap = \
     BIT( S_CMD_Q_WRNMAXLEN ) | \
     BIT( S_CMD_Q_RDNMAXLEN ) | \
     BIT( S_CMD_S_BUSTYPE ) | \
-    BIT( S_CMD_O_SPIOP ) | \
-    BIT( S_CMD_O_DELAY ) \
+    BIT( S_CMD_O_SPIOP ) \
 ;
 
 static const uint8_t ProgrammerName[ 16 ] = {
