@@ -90,7 +90,7 @@ static CommandProc SerprogCommandTable[ ] = {
     nak,    // 0x0B o init
     nak,    // 0x0C o write byte
     nak,    // 0x0D o write n bytes
-    o_delay,    // 0x0E o delay
+    nak,    // 0x0E o delay
     nak,    // 0x0F o exec,
     syncnop,// 0x10
     q_maxrdlen,    // 0x11 q max rd n len

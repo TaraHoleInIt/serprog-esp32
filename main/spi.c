@@ -85,7 +85,7 @@ void SPIRW( uint32_t RBytes, uint32_t SBytes ) {
 
     if ( RBytes > 0 ) {
        uart_write_bytes( UART_NUM_2, ( const char* ) &RXBuffer[ 1 ], RBytes );
-       //uart_flush( UART_NUM_2 );
+       uart_flush( UART_NUM_2 );
        uart_wait_tx_done( UART_NUM_2, portMAX_DELAY );
     }
 }
