@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include "driver/uart.h"
 #include "driver/spi_master.h"
 #include "esp_log.h"
 #include "serprog.h"
@@ -64,10 +65,9 @@ void SPIRW( uint32_t RBytes, uint32_t SBytes ) {
         return;
     }
 
-    memset( TXBuffer, 0x00, sizeof( TXBuffer ) );
-
-    for ( i = 0; i < SBytes; i++ ) {
-        TXBuffer[ i ] = UARTRead8( );
+    if ( SBytes > 0 ) {
+        memset( TXBuffer, 0x00, sizeof( TXBuffer ) );
+        uart_read_bytes( UART_NUM_2, TXBuffer, SBytes, portMAX_DELAY );
     }
 
     memset( &SPITrans, 0, sizeof( spi_transaction_t ) );
@@ -80,24 +80,13 @@ void SPIRW( uint32_t RBytes, uint32_t SBytes ) {
     SPITrans.tx_buffer = ( SBytes > 0 ) ? TXBuffer : NULL;
     SPITrans.rx_buffer = ( RBytes > 0 ) ? RXBuffer : NULL;
 
-    //printf( "%s: [ TX: ", __func__ );
-
-    for ( i = 0; i < SBytes; i++ ) {
-        //printf( "0x%02x ", TXBuffer[ i ] );
-    }
-
-    //printf( "] [ RX: " );
-
     ESP_ERROR_CHECK( spi_device_transmit( FlashHandle, &SPITrans ) );
     UARTWrite8( S_ACK );
 
     if ( RBytes > 0 ) {
-        for ( i =  1; i < RBytes + 1; i++ ) {
-            UARTWrite8( RXBuffer[ i ] );
-            //printf( "0x%02x ", RXBuffer[ i ] );
-        }
+       uart_write_bytes( UART_NUM_2, ( const char* ) &RXBuffer[ 1 ], RBytes );
+       //uart_flush( UART_NUM_2 );
+       uart_wait_tx_done( UART_NUM_2, portMAX_DELAY );
     }
-
-    //printf( "]\n" );
 }
 

@@ -21,6 +21,7 @@ static void q_pgmname( void );
 static void q_serbuf( void );
 static void q_bustype( void );
 static void q_wrnmaxlen( void );
+static void o_delay( void );
 static void syncnop( void );
 static void q_maxrdlen( void );
 static void s_bustype( void );
@@ -37,7 +38,8 @@ static const uint32_t CommandMap = \
     BIT( S_CMD_Q_WRNMAXLEN ) | \
     BIT( S_CMD_Q_RDNMAXLEN ) | \
     BIT( S_CMD_S_BUSTYPE ) | \
-    BIT( S_CMD_O_SPIOP ) \
+    BIT( S_CMD_O_SPIOP ) | \
+    BIT( S_CMD_O_DELAY ) \
 ;
 
 static const uint8_t ProgrammerName[ 16 ] = {
@@ -88,7 +90,7 @@ static CommandProc SerprogCommandTable[ ] = {
     nak,    // 0x0B o init
     nak,    // 0x0C o write byte
     nak,    // 0x0D o write n bytes
-    nak,    // 0x0E o delay
+    o_delay,    // 0x0E o delay
     nak,    // 0x0F o exec,
     syncnop,// 0x10
     q_maxrdlen,    // 0x11 q max rd n len
@@ -151,6 +153,11 @@ static void q_bustype( void ) {
 static void q_wrnmaxlen( void ) {
     ack( );
     UARTWrite24( RWBufferSize );
+}
+
+static void o_delay( void ) {
+    ack( );
+    ets_delay_us( UARTRead32( ) );
 }
 
 static void syncnop( void ) {

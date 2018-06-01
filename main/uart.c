@@ -52,20 +52,24 @@ uint32_t UARTRead32( void ) {
 
 void UARTWrite8( uint8_t Data ) {
     uart_write_bytes( UARTPort, ( const char* ) &Data, sizeof( Data ) );
+    uart_flush( UARTPort );
     uart_wait_tx_done( UARTPort, UARTTimeout );
 }
 
 void UARTWrite16( uint16_t Data ) {
     uart_write_bytes( UARTPort, ( const char* ) &Data, sizeof( Data ) );
+    uart_flush( UARTPort );
     uart_wait_tx_done( UARTPort, UARTTimeout );
 }
 
 void UARTWrite24( uint32_t Data ) {
     uart_write_bytes( UARTPort, ( const char* ) &Data, 3 );
+    uart_flush( UARTPort );
     uart_wait_tx_done( UARTPort, UARTTimeout );
 }
 
 void UARTWrite32( uint32_t Data ) {
     uart_write_bytes( UARTPort, ( const char* ) &Data, sizeof( Data ) );
+    uart_flush( UARTPort );
     uart_wait_tx_done( UARTPort, UARTTimeout );
 }
