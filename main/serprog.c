@@ -186,22 +186,18 @@ static void o_spiop( void ) {
     TXLen = UARTRead24( );
     RXLen = UARTRead24( );
 
-    printf( "%s: [TX: %u] [RX: %u]\n", __func__, TXLen, RXLen );
+    //printf( "%s: [TX: %u] [RX: %u]\n", __func__, TXLen, RXLen );
     SPIRW( RXLen, TXLen );
 }
 
 void Serprog_Tick( void ) {
     uint8_t Opcode = UARTRead8( );
     
-    if ( Opcode <= CommandCount ) {
+    if ( Opcode < CommandCount ) {
         //printf( "%s: [0x%02x] %s\n", __func__, Opcode, CommandNames[ Opcode ] );
 
         if ( SerprogCommandTable[ Opcode ] != NULL ) {
             ( SerprogCommandTable[ Opcode ] ) ( );
-        } else {
-            printf( "aaa\n" );
         }
-    } else {
-        printf( "ono 0x%02x\n", Opcode );
     }
 }

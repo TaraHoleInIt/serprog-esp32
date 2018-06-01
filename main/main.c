@@ -17,8 +17,4 @@ void app_main( void ) {
             vTaskDelay( pdMS_TO_TICKS( 5 ) );
         }
     }
-
-    while ( true ) {
-        vTaskDelay( pdMS_TO_TICKS( 500 ) );
-    }
 }

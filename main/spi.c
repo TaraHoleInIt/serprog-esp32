@@ -62,7 +62,9 @@ void SPIRW( uint32_t RBytes, uint32_t SBytes ) {
     if ( RBytes > RWBufferSize ) {
         printf( "[RBytes: %u] > %d\n", RBytes, sizeof( RXBuffer ) );
         return;
-    }    
+    }
+
+    memset( TXBuffer, 0x00, sizeof( TXBuffer ) );
 
     for ( i = 0; i < SBytes; i++ ) {
         TXBuffer[ i ] = UARTRead8( );
@@ -71,28 +73,31 @@ void SPIRW( uint32_t RBytes, uint32_t SBytes ) {
     memset( &SPITrans, 0, sizeof( spi_transaction_t ) );
 
     Length = ( SBytes > RBytes ) ? SBytes : RBytes;
+    Length = ( RBytes > 0 ) ? Length + 1 : Length;
 
     SPITrans.length = ( SBytes > 0 ) ? Length * 8 : 0;
     SPITrans.rxlength = ( RBytes > 0 ) ? Length * 8 : 0;
     SPITrans.tx_buffer = ( SBytes > 0 ) ? TXBuffer : NULL;
     SPITrans.rx_buffer = ( RBytes > 0 ) ? RXBuffer : NULL;
 
-    printf( "%s: [ TX: ", __func__ );
+    //printf( "%s: [ TX: ", __func__ );
 
     for ( i = 0; i < SBytes; i++ ) {
-        printf( "0x%02x ", TXBuffer[ i ] );
+        //printf( "0x%02x ", TXBuffer[ i ] );
     }
 
-    printf( "] [ RX: " );
+    //printf( "] [ RX: " );
 
     ESP_ERROR_CHECK( spi_device_transmit( FlashHandle, &SPITrans ) );
     UARTWrite8( S_ACK );
 
-    for ( i = 0; i < RBytes; i++ ) {
-        UARTWrite8( RXBuffer[ i ] );
-        printf( "0x%02x ", RXBuffer[ i ] );
+    if ( RBytes > 0 ) {
+        for ( i =  1; i < RBytes + 1; i++ ) {
+            UARTWrite8( RXBuffer[ i ] );
+            //printf( "0x%02x ", RXBuffer[ i ] );
+        }
     }
 
-    printf( "]\n" );
+    //printf( "]\n" );
 }
 
