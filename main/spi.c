@@ -73,6 +73,10 @@ void SPIRW( uint32_t RBytes, uint32_t SBytes ) {
     memset( &SPITrans, 0, sizeof( spi_transaction_t ) );
 
     Length = ( SBytes > RBytes ) ? SBytes : RBytes;
+
+    // HACKHACKHACK
+    // First byte is bad?
+    // Read an extra and skip over the first.
     Length = ( RBytes > 0 ) ? Length + 1 : Length;
 
     SPITrans.length = ( SBytes > 0 ) ? Length * 8 : 0;
@@ -85,7 +89,6 @@ void SPIRW( uint32_t RBytes, uint32_t SBytes ) {
 
     if ( RBytes > 0 ) {
        uart_write_bytes( UART_NUM_2, ( const char* ) &RXBuffer[ 1 ], RBytes );
-       uart_flush( UART_NUM_2 );
        uart_wait_tx_done( UART_NUM_2, portMAX_DELAY );
     }
 }

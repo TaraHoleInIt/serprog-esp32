@@ -3,7 +3,8 @@
 
 #define UARTTimeout portMAX_DELAY
 #define RWBufferSize 2048
-#define BaudRate 460800
+#define BaudMul 1
+#define BaudRate ( 115200 * BaudMul )
 
 #define Frequency 100000
 #define Pin_MOSI 13

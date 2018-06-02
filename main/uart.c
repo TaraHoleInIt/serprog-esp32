@@ -16,7 +16,7 @@ bool UARTInit(  int TXPin, int RXPin ) {
     };
 
     ESP_ERROR_CHECK( uart_param_config( UARTPort, &Config ) );
-    ESP_ERROR_CHECK( uart_driver_install( UARTPort, 1024, 0, 0, NULL, 0 ) );
+    ESP_ERROR_CHECK( uart_driver_install( UARTPort, 2048, 0, 0, NULL, 0 ) );
     ESP_ERROR_CHECK( uart_set_pin( UARTPort, TXPin, RXPin, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE ) );
 
     return true;
@@ -52,24 +52,24 @@ uint32_t UARTRead32( void ) {
 
 void UARTWrite8( uint8_t Data ) {
     uart_write_bytes( UARTPort, ( const char* ) &Data, sizeof( Data ) );
-    uart_flush( UARTPort );
-    uart_wait_tx_done( UARTPort, UARTTimeout );
+    //uart_flush( UARTPort );
+    //uart_wait_tx_done( UARTPort, UARTTimeout );
 }
 
 void UARTWrite16( uint16_t Data ) {
     uart_write_bytes( UARTPort, ( const char* ) &Data, sizeof( Data ) );
-    uart_flush( UARTPort );
-    uart_wait_tx_done( UARTPort, UARTTimeout );
+    //uart_flush( UARTPort );
+    //uart_wait_tx_done( UARTPort, UARTTimeout );
 }
 
 void UARTWrite24( uint32_t Data ) {
     uart_write_bytes( UARTPort, ( const char* ) &Data, 3 );
-    uart_flush( UARTPort );
-    uart_wait_tx_done( UARTPort, UARTTimeout );
+    //uart_flush( UARTPort );
+    //uart_wait_tx_done( UARTPort, UARTTimeout );
 }
 
 void UARTWrite32( uint32_t Data ) {
     uart_write_bytes( UARTPort, ( const char* ) &Data, sizeof( Data ) );
-    uart_flush( UARTPort );
-    uart_wait_tx_done( UARTPort, UARTTimeout );
+    //uart_flush( UARTPort );
+    //uart_wait_tx_done( UARTPort, UARTTimeout );
 }
